@@ -12,12 +12,7 @@ use App\Models\Image;
 */
 
 Route::get('/', function () {
-
-    $heroImage = Image::where('type', 'hero')
-        ->latest()
-        ->first();
-
-    return view('pages.home', compact('heroImage'));
+    return view('pages.home');
 });
 
 
