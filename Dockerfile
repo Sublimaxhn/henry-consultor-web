@@ -1,20 +1,34 @@
+# --------- ETAPA 1: Construir Vite ----------
+FROM node:20 as nodebuilder
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+RUN npm run build
+
+
+# --------- ETAPA 2: PHP ----------
 FROM php:8.3-cli
 
 WORKDIR /app
 
-# Instalar dependencias del sistema
+# Instalar dependencias necesarias
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libzip-dev \
     zip \
     curl \
-    nodejs \
-    npm \
     && docker-php-ext-install zip
 
-# Copiar archivos
+# Copiar proyecto
 COPY . .
+
+# Copiar carpeta build generada por Node
+COPY --from=nodebuilder /app/public/build ./public/build
 
 # Instalar Composer
 RUN curl -sS https://getcomposer.org/installer | php \
@@ -22,12 +36,6 @@ RUN curl -sS https://getcomposer.org/installer | php \
 
 # Instalar dependencias PHP
 RUN composer install --no-dev --optimize-autoloader
-
-# Instalar dependencias Node
-RUN npm install
-
-# 🔥 Construir Vite para producción
-RUN npm run build
 
 EXPOSE 10000
 
