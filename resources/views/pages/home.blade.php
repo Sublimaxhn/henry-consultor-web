@@ -95,8 +95,8 @@
             </p>
         </div>
 
-       @if($heroImage)
-    <img src="{{ asset('storage/'.$heroImage->path) }}"
+    @if(isset($heroImage) && $heroImage)
+    <img src="{{ asset('storage/' . $heroImage->path) }}"
          alt="Firma Auditora"
          class="rounded-xl shadow-2xl w-full object-cover">
 @else
@@ -104,6 +104,7 @@
         Imagen no cargada
     </div>
 @endif
+
 
 
     </div>
