@@ -36,6 +36,6 @@ RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 10000
 
-CMD php -S 0.0.0.0:10000 public/index.php
+CMD ["sh", "-c", "cd public && php -S 0.0.0.0:$PORT"]
 
 
